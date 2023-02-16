@@ -179,7 +179,7 @@ return {
 
  //allow user to input there name
  //getting inputted name with localstorage
- let playNames=JSON.parse(localStorage.getItem('player'));
+ 
 
 //player obj
  const Player=(name)=>{
@@ -190,9 +190,14 @@ return {
 
     return{info}
  }
-
+   let playNames;
+ if(JSON.parse(localStorage.getItem('player'))){
+     playNames=JSON.parse(localStorage.getItem('player'))
+    
+ }
  const playerone=Player(playNames.playerone);
  const playertwo=Player(playNames.playertwo);
+
 
 
   //congratulate the winner by the inputered name
@@ -218,11 +223,11 @@ const displayWinner=(()=>{
 // getting player names with localstorage
     const playerName=(e)=>{
       
-        if(playerTwo.value==="" && playerOne.value===""){
+        if(playerTwo.value==="" || playerOne.value===""){
             e.preventDefault()
             alert("PLEASE INPUT YOUR NAMES");
         }
-
+       
         localStorage.setItem('player',JSON.stringify({playerone:playerOne.value,playertwo:playerTwo.value}));
     };
 
