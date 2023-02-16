@@ -16,74 +16,92 @@ a{
     text-decoration: none;
     color:var(--primary-col);
 }
+
 body{
+     overflow-x: hidden;
     background-color:#0F0E0E;
     font-family: 'Montserrat', sans-serif;
-    gap: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
     height: 100vh;
-   padding: 30px;
     text-align: center;
     color: var(--primary-col);
 }
 
 .div-btn{
     display: flex;
-    gap: 22px;
+    flex-direction: column;
+}
+
+.div-btn > *+*{
+  margin-top: 17px;
 }
 
 header{
     display: flex;
     flex-direction: column;
-    width: 100%;
+     align-items: center;
     justify-content: center;
+    height: 100vh;
+}
+
+header > *+*{
+     margin-top: 2.5rem;
 }
 
  button{
     display: inline-block;
-    padding: 16px 50px;
+    padding: 1rem;
     background-color:transparent;
     border: 2px solid #fff;
-    font-size: 1.6rem;
-  margin-top: 13px;
-  cursor: pointer;
- color: var(--primary-col);
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--primary-col);
+     max-width: 400px;
+    
 }
 
 
 ::placeholder{
     color: #fff;
-    font-size: 1.7rem;
+    font-size: 1.3rem;
     font-family: 'Montserrat', sans-serif;
+    text-align: center;
 }
-header h1,header p{
-    font-size: 4rem;
+
+header h1,header p,.board h1{
+    
     font-weight:bold ;
     text-transform: capitalize;
 }
 
-header p{
-    font-size: 2.5rem;
-  
-    margin-top: 20px;
+header h1{
+    font-size: 2rem;
 }
-.inpu{
-    margin-top: 25px;
+
+header p{
+    font-size: 1.1rem;
+     max-width: 650px;
+     width: 90%;
+}
+
+.input{
+      display: flex;
+       flex-direction: column;
+}
+
+.input > *+*{
+    margin-top: 1rem;
 }
 
 input[type='text']{
-    padding:5px 10px;
+     padding:7px;
     color: #fff;
-    width: 280px;
-    outline: none;
-   margin: 20px 20px;
-    font-size: 1.7rem;
-    border: none;
-    background-color: transparent;
-    border-bottom: 2px solid var(--primary-col);
+     width: 100%;
+     outline: none;
+     font-size:1.3rem;
+     border: none;
+     background-color: transparent;
+     border-bottom: 2px solid var(--primary-col);
+     text-align: center;
 }
 
 
@@ -95,13 +113,13 @@ input[type='text']{
 table{
    
     border-spacing:0;
-    font-size: 3.7rem;
+    font-size: 3rem;
 }
 
 td{
-    border: 6px var(--primary-col) solid;
-    width: 7rem;
-    height: 7rem;
+    border: 3px var(--primary-col) solid;
+    width: 5.5rem;
+    height: 5.5rem;
     
 }
 
@@ -119,17 +137,28 @@ table tr:last-child td{
 }
 
 .container{
-  
-    font-family: 'Montserrat', sans-serif;
-  gap: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
- padding: 30px;
-  text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 80%;
 }
+
+.board{
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    text-align: center;
+    justify-content: center;
+     
+}
+
+.board > *+*{
+    margin-top: 2rem;
+}
+
 
 .blur{
        /* Add the blur effect */
@@ -163,11 +192,118 @@ table tr:last-child td{
 }
 
 .display-wins{
-    font-size: 3.8rem;
+    font-size: 2.5rem;
 }
 
 
 
 .open-modal{
     display: flex;
+}
+
+
+@media(min-width:650px){
+
+    table{
+   
+        border-spacing:0;
+        font-size: 3rem;
+    }
+    
+    td{
+        border: 6px var(--primary-col) solid;
+        width: 7rem;
+        height: 7rem;
+        
+    }
+
+    .div-btn {
+        
+        flex-direction:row;
+    }
+
+    .div-btn > *+* {
+        margin-top: 0px;
+        margin-left:17px ;
+    }
+
+  header h1 ,.board h1{
+        font-size: 3rem;
+    }
+
+    header p {
+        font-size: 1.7rem;
+        width: 100%;
+    }
+
+  .input{
+    flex-direction: row; 
+    justify-content: space-between;
+  }
+
+.input > *+*{
+    margin-top: 0;
+}
+
+input[type='text']{
+    width: 50%;
+   
+}
+
+.display-wins{
+    font-size: 3rem;
+}
+
+}
+
+@media(min-width:800px){
+
+    table{
+   
+        border-spacing:0;
+        font-size: 3.5rem;
+    }
+    
+    td{
+        border: 6px var(--primary-col) solid;
+        width: 7.6rem;
+        height: 7.6rem;
+        
+    }
+  
+    header > *+*{
+        margin-top: 3rem;
+   }
+
+  header h1 ,.board h1{
+        font-size: 3rem;
+    }
+
+    header p {
+        font-size: 2.3rem;
+        width: 100%;
+    }
+
+  .input{
+    flex-direction: row; 
+    justify-content: space-between;
+  }
+
+.input > *+*{
+    margin-top: 0;
+}
+
+input[type='text']{
+    width: 50%;
+   
+}
+
+::placeholder{
+    font-size: 1.6rem;
+   
+}
+
+.display-wins{
+    font-size: 3rem;
+}
 }

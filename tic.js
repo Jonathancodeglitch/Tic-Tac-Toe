@@ -229,6 +229,8 @@ const displayWinner=(()=>{
         }
        
         localStorage.setItem('player',JSON.stringify({playerone:playerOne.value,playertwo:playerTwo.value}));
+        playerOne.value===""
+        playerTwo.value==="" 
     };
 
     return{
