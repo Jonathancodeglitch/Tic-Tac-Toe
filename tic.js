@@ -190,11 +190,16 @@ return {
 
     return{info}
  }
-   let playNames;
+
+   let playNames={
+    
+   };
+
  if(JSON.parse(localStorage.getItem('player'))){
      playNames=JSON.parse(localStorage.getItem('player'))
     
  }
+
  const playerone=Player(playNames.playerone);
  const playertwo=Player(playNames.playertwo);
 
