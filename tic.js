@@ -192,12 +192,9 @@ return {
  }
 
    let playNames;
-
-
-     playNames=JSON.parse(localStorage.getItem('player')) || {playerone:"",playertwo:""}
+     playNames=JSON.parse(localStorage.getItem('player')) || {playerone:"", playertwo:""}
     
- 
-
+     
  const playerone=Player(playNames.playerone);
  const playertwo=Player(playNames.playertwo);
 
