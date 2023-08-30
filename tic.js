@@ -1,265 +1,186 @@
-//contents board items
+//player should be able to click on the board and display there marker
+//display which person turn it is currently
+// build a logic that can check if the game is over , if a player won , if its a tie
+// add a button to start and restart the game
+// add a display element that displays won,if the game is a tie
+//create an ai so a player can play with a computer
 
-const GameBoard=(function(){
-        let board=['X','O','X','O','X','O','X','O','X'];
-        //boards
-        let b1= document.querySelector(".b1")
-        let b2= document.querySelector(".b2")
-        let b3= document.querySelector(".b3")
-        let b4= document.querySelector(".b4")
-        let b5= document.querySelector(".b5")
-        let b6= document.querySelector(".b6")
-        let b7= document.querySelector(".b7")
-        let b8= document.querySelector(".b8")
-        let b9= document.querySelector(".b9")
-        
-        //write a function that would render the board array to the dom
-            //build a function that allows players to add their make to a specific spot on the board 
-            //dont forget to add the logic of not playing in a spot that has already been played on
-        let  count=0;
+let cells = document.querySelectorAll('.box');
+let currentPlayer = document.getElementById('current-player');
+let modal = document.getElementById('modal');
+let modalText = document.querySelector('.display-wins');
+let restartButton = document.querySelector('.restart');
 
-            const display=(e)=>{ 
-            e.target.innerHTML=board[count];
-            
-            count++
-                    if(count>=board.length){
-                        ties()
-                    }
-                    checkRow()
-                    checkColumn()  
-                    checkdiagonal()
-                
-            }
+let PlayerOneTurn = true;
 
-        
+const gameBoard = (() => {
+  const board = ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'];
 
+  const getBoard = () => {
+    return board;
+  };
 
-        //build a logic to check for when the game is a win
-        //check rows
-        const checkRow=()=>{
-            //checks rows for x
-            if(b1.innerHTML=='X' && b2.innerHTML=='X' && b3.innerHTML=='X'){
-                styleBoard(b1,b2,b3)
-                displayWinner.win(playerone.info())
-            }
-            else if(b4.innerHTML=='X' && b5.innerHTML=='X' && b6.innerHTML=='X'){
-                styleBoard(b4,b5,b6)
-                displayWinner.win(playerone.info())
-            
-            }
-            else if(b7.innerHTML=='X' && b8.innerHTML=='X' && b9.innerHTML=='X'){
-                styleBoard(b7,b8,b9)
-                displayWinner.win(playerone.info())
-            
-            }
-            //checks rows for o
-            if(b1.innerHTML=='O' && b2.innerHTML=='O' && b3.innerHTML=='O'){
-                styleBoard(b1,b2,b3)
-                displayWinner.win(playertwo.info())
-            
-            }
-            else if(b4.innerHTML=='O' && b5.innerHTML=='O' && b6.innerHTML=='O'){
-                styleBoard(b4,b5,b6)
-                displayWinner.win(playertwo.info())
-            
-            }
-            else if(b7.innerHTML=='O' && b8.innerHTML=='O' && b9.innerHTML=='O'){
-                styleBoard(b7,b8,b9)
-                displayWinner.win(playertwo.info())
-            
-            }
-        
-        }
-        //check column
-        const checkColumn=()=>{
-                    //check columns x
-                    if(b1.innerHTML=='X' && b4.innerHTML=='X' && b7.innerHTML=='X'){
-                        styleBoard(b1,b4,b7)
-                        displayWinner.win(playerone.info())
-                    
-                    }
-                    else if(b2.innerHTML=='X' && b5.innerHTML=='X' && b8.innerHTML=='X'){
-                        styleBoard(b2,b5,b8)
-                        displayWinner.win(playerone.info())
-                    
-                    }
-                    else if(b3.innerHTML=='X' && b6.innerHTML=='X' && b9.innerHTML=='X'){
-                        styleBoard(b3,b6,b9);
-                        displayWinner.win(playerone.info())
-                    
-                    }
+  const winCondition = () => {
+    return [
+      //check rows
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      //check column
+      [1, 4, 7],
+      [2, 5, 8],
+      [3, 6, 9],
+      //check diagonal
+      [1, 5, 9],
+      [3, 5, 7],
+    ];
+  };
 
-        // check for column for o
-                if(b1.innerHTML=='O' && b4.innerHTML=='O' && b7.innerHTML=='O'){
-                    styleBoard(b1,b4,b7);
-                    displayWinner.win(playertwo.info());
-                    return true
-                    }
-                    else if(b2.innerHTML=='O' && b5.innerHTML=='O' && b8.innerHTML=='O'){
-                        styleBoard(b2,b5,b8);
-                        displayWinner.win(playertwo.info());
-                
-                    }
-                    else if(b3.innerHTML=='O' && b6.innerHTML=='O' && b9.innerHTML=='O'){
-                        styleBoard(b3,b6,b9);
-                        displayWinner.win(playertwo.info());
-                    
-                    }
-                
-        }
+  return {
+    getBoard,
+    winCondition,
+  };
+})();
 
-        //check diagonal
-        const checkdiagonal=()=>{
-                    //check diagonal x
-                    if(b1.innerHTML=='X' && b5.innerHTML=='X' && b9.innerHTML=='X'){
-                        styleBoard(b1,b5,b9);
-                        displayWinner.win(playerone.info());
-                        
-                    }
-                    else if(b3.innerHTML=='X' && b5.innerHTML=='X' && b7.innerHTML=='X'){
-                        styleBoard(b3,b5,b7);
-                        displayWinner.win(playerone.info());
-                    
-                    }
-        
+//player object
+const player = (name, marker) => {
+  let moves = []; // store player moves
+  return { name, marker, moves };
+};
 
-                // check for column for o
-                        if(b1.innerHTML=='O' && b5.innerHTML=='O' && b9.innerHTML=='O'){
-                            styleBoard(b1,b5,b9);
-                            displayWinner.win(playertwo.info());
-                            
-                            }
-                            else if(b3.innerHTML=='O' && b5.innerHTML=='O' && b7.innerHTML=='O'){
-                                styleBoard(b3,b5,b7);
-                                displayWinner.win(playertwo.info());
-                            
-                            }
-                        
-                
-        }
-        //build a logic to check for a tie
-        
-        const ties=()=>{
-        if(checkColumn()!==true || checkRow()!==true || checkdiagonal()!==true){
-            displayWinner.win(`its a Draw`)
-        };
-        
-        }
+let playerOne = player('morgan', 'x');
+let playerTwo = player('Ada', 'o');
 
-        //when a game is won outline the win
-        const styleBoard=(a,b,c)=>{
-            const color=`#383737 `
-            a.style.backgroundColor = color;
-            b.style.backgroundColor = color;
-            c.style.backgroundColor = color;
-        }
+//game conttroller
+const gameController = (() => {
+  const changePlayerTurn = () => {
+    PlayerOneTurn = !PlayerOneTurn;
+  };
 
-        // build a button to restart the game
-        const restart=()=>{
-                    count=0
-                    document.querySelectorAll('.box').forEach(box=>{
-                        box.innerHTML=''
-                        box.style.backgroundColor ='transparent';
-                        document.querySelectorAll('.box').forEach(box=>{
-                            box.addEventListener("click",GameBoard.display,{once:true})
-                    });
-                });
-        };
-
-
-
-return {
-     display,
-     restart
-}
-
-  
-})()
-
-
- //allow user to input there name
- //getting inputted name with localstorage
- 
-
-//player obj
- const Player=(name)=>{
-    let Name=name;
-     //first letter to uppercase
-    const capitalized = Name.charAt(0).toUpperCase() + Name.slice(1).toLowerCase();
-    const info=()=>`The Winner is <br> <span>${capitalized}</span>`;
-
-    return{info}
- }
-
-   let playNames;
-     playNames=JSON.parse(localStorage.getItem('player')) || {playerone:"", playertwo:""}
-    
-     
- const playerone=Player(playNames.playerone);
- const playertwo=Player(playNames.playertwo);
-
-
-
-  //congratulate the winner by the inputered name
-const displayWinner=(()=>{
-
-    const modalContent= document.querySelector('.display-wins');
-    const container=document.querySelector('.container');
-     const modal=document.querySelector(".modal");
-     const playerTwo=document.querySelector('.player-two')
-     const playerOne=document.querySelector('.player-one')
-       //displayer winner
-     const win=(mark)=>{
-         container.classList.add('blur')
-        modal.classList.add('open-modal');
-        modalContent.innerHTML=mark
-    };
-//onclick remove modal and restart game
-    const removeWinner=()=>{
-        GameBoard.restart()
-        container.classList.remove('blur');
-        modal.classList.remove('open-modal')
-    };
-// getting player names with localstorage
-    const playerName=(e)=>{
-      
-        if(playerTwo.value==="" || playerOne.value===""){
-            e.preventDefault()
-            alert("PLEASE INPUT YOUR NAMES");
-        }
-       
-        localStorage.setItem('player',JSON.stringify({playerone:playerOne.value,playertwo:playerTwo.value}));
-        playerOne.value===""
-        playerTwo.value==="" 
-    };
-
-    return{
-        win,
-        removeWinner,
-        playerName
+  const updatePlayerMoves = (value) => {
+    if (PlayerOneTurn) {
+      playerOne.moves.push(Number(value));
+    } else {
+      playerTwo.moves.push(Number(value));
     }
-})()
+  };
+  //check win
+  const checkWin = () => {
+    let winCondition = gameBoard.winCondition();
+    let winnerName;
+    let winnerMoves;
 
-//add events
-let box=document.querySelectorAll('.box').forEach(box=>{
-      box.addEventListener("click",GameBoard.display,{once:true})
-})
+    winCondition.forEach((win) => {
+      let xWins = win.every((elem) => playerOne.moves.includes(elem));
 
-let restartBtn=document.querySelector('.restart')
-if(restartBtn){
-    restartBtn.addEventListener('click',GameBoard.restart)
-}
+      let oWins = win.every((elem) => playerTwo.moves.includes(elem));
 
-let modal=document.querySelector('.modal');
+      if (xWins) {
+        winnerName = playerOne.name;
+        winnerMoves = win;
+      } else if (oWins) {
+        winnerName = playerTwo.name;
+        winnerMoves = win;
+      }
+    });
+    //continue from here
+    return [winnerName, winnerMoves];
+  };
+  // check if cell is empty
+  const checkForEmptyCell = () => {
+    let isCellEmpty = true;
+    cells.forEach((cell) => {
+      if (cell.textContent === '') {
+        isCellEmpty = false;
+      }
+    });
+    return isCellEmpty;
+  };
 
-    if(modal){
-        modal.addEventListener('click',displayWinner.removeWinner)
+  //restate game
+  const restateGame = () => {
+    //set player turn back to default
+    PlayerOneTurn = true;
+    displayController.displayCurrentPlayerName();
+    //clear cells
+    cells.forEach((cell) => {
+      cell.textContent = '';
+      cell.style.backgroundColor = '';
+    });
+    // clear player previous moves
+    playerOne.moves = [];
+    playerTwo.moves = [];
+    //remove display winner modal if present
+    if (modal) modal.classList.remove('open-modal');
+  };
+
+  return {
+    changePlayerTurn,
+    checkWin,
+    checkForEmptyCell,
+    updatePlayerMoves,
+    restateGame,
+  };
+})();
+
+//display obj
+const displayController = (() => {
+  // let board = gameBoard.getBoard();
+  // let count = 0;
+
+  const displayCurrentPlayerName = () => {
+    let text = `It's ${
+      PlayerOneTurn == true ? playerOne.name : playerTwo.name
+    } Turn`;
+    currentPlayer.textContent = text;
+  };
+
+  const displayWinner = () => {
+    const [winnerName, winnerMoves] = gameController.checkWin();
+    //check for draw
+    if (gameController.checkForEmptyCell() && !winnerName) {
+      modal.classList.add('open-modal');
+      modalText.textContent = `DRAW!!`;
+      //remove currentPlayerName
+      currentPlayer.textContent = '';
+    } else if (winnerName) {
+      // check for a win
+      modal.classList.add('open-modal');
+      modalText.textContent = `The winner is ${winnerName}`;
+      //outline winner moves
+      winnerMoves.forEach((moves) => {
+        let cell = document.querySelector(`[data-value="${moves}"]`);
+        cell.style.backgroundColor = '#383737';
+      });
+      //remove currentPlayerName
+      currentPlayer.textContent = '';
     }
+  };
 
+  const displayMarker = (e) => {
+    let cell = e.target;
+    let cellValue = cell.dataset.value;
+    if (cell.textContent == '') {
+      //update gamboard with x or o
+      cell.textContent = `${PlayerOneTurn ? 'X' : 'O'}`;
+      gameController.updatePlayerMoves(cellValue);
+      gameController.changePlayerTurn();
+      displayCurrentPlayerName();
+      displayWinner();
+    }
+  };
 
-    const start=document.querySelector('.start');
-if(start){
-    start.addEventListener('click',displayWinner.playerName)
-}
+  return { displayMarker, displayCurrentPlayerName };
+})();
 
+displayController.displayCurrentPlayerName(); // display who's play turn it is..
 
+//event listner
+cells.forEach((cell) => {
+  cell.addEventListener('click', displayController.displayMarker);
+});
+
+//restate game when button is click
+restartButton.addEventListener('click', gameController.restateGame);
+// remove modal and restate game
+modal.addEventListener('click', gameController.restateGame);

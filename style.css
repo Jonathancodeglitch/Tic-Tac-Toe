@@ -184,63 +184,63 @@ table tr:last-child td{
 }
 
 .modal-content{
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.089);
-    padding: 30px;
-    border-radius: 7px;
+justify-content: center;
+align-items: center;
+background-color: rgba(0, 0, 0, 0.5);
+padding: 30px;
+border-radius: 7px;
 }
 
 .display-wins{
-    font-size: 2.5rem;
+font-size: 2.5rem;
 }
 
 
 
 .open-modal{
-    display: flex;
+display: flex;
 }
 
 
 @media(min-width:650px){
 
-   
-    table{
-   
-        border-spacing:0;
-        font-size: 3rem;
-    }
+
+table{
+
+    border-spacing:0;
+    font-size: 3rem;
+}
+
+td{
+    border: 6px var(--primary-col) solid;
+    width: 7rem;
+    height: 7rem;
     
-    td{
-        border: 6px var(--primary-col) solid;
-        width: 7rem;
-        height: 7rem;
-        
-    }
+}
 
-    .div-btn {
-        
-        flex-direction:row;
-    }
+.div-btn {
+    
+    flex-direction:row;
+}
 
-    .div-btn > *+* {
-        margin-top: 0px;
-        margin-left:17px ;
-    }
+.div-btn > *+* {
+    margin-top: 0px;
+    margin-left:17px ;
+}
 
-  header h1 ,.board h1{
-        font-size: 3rem;
-    }
+header h1 ,.board h1{
+    font-size: 3rem;
+}
 
-    header p {
-        font-size: 1.7rem;
-        width: 100%;
-    }
+header p {
+    font-size: 1.7rem;
+    width: 100%;
+}
 
-  .input{
-    flex-direction: row; 
-    justify-content: space-between;
-  }
+.input{
+flex-direction: row; 
+justify-content: space-between;
+}
 
 .input > *+*{
     margin-top: 0;

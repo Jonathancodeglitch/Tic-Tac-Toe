@@ -9,40 +9,36 @@
 </head>
 <body>
     <div class="container board">
-             
-                    <h1>Tic-tac-toe</h1>
-                    
-                
-               <table>
-                    <tbody>
-                        <tr>
-                            <td class="box b1"></td>
-                            <td class="box b2"></td>
-                            <td class="box b3"></td>
-                        </tr>
-                        <tr>
-                            <td class="box b4"></td>
-                            <td class="box b5"></td>
-                            <td class="box b6"></td>
-                        </tr>
-                        <tr>
-                            <td class="box b7"></td>
-                            <td class="box b8"></td>
-                            <td class="box b9"></td>
-                        </tr>
-                     </tbody>
-               </table>
-      
-                <div class="div-btn">
-                    <button class="restart"><span>Restart game</span></button>
-                    <button><a href="./index.html">Go Back ←</a></button>
-                </div>
+        <h1 id="current-player"></h1>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="box" data-value="1"></td>
+                    <td class="box" data-value="2"></td>
+                    <td class="box" data-value="3"></td>
+                </tr>
+                <tr>
+                    <td class="box" data-value="4"></td>
+                    <td class="box" data-value="5"></td>
+                    <td class="box" data-value="6"></td>
+                </tr>
+                <tr>
+                    <td class="box" data-value="7"></td>
+                    <td class="box" data-value="8"></td>
+                    <td class="box" data-value="9"></td>
+                </tr>
+                </tbody>
+        </table>
+        <div class="div-btn">
+            <button class="restart"><span>Restart game</span></button>
+            <button><a href="./index.html">Go Back ←</a></button>
+        </div>
     </div>  
    
-    <div class="modal">
-           <div class="modal-content">
-                <h1 class="display-wins"></h1>
-           </div>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h1 class="display-wins">hello beautify</h1>
+        </div>
     </div>
     <script src="./tic.js"></script>
 </body>
