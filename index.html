@@ -19,8 +19,30 @@
         </div>
         <button class="start"><a href="./game.html" >Start Game</a></button>
     </header>
-   
-   
-    <script src="./tic.js"></script>
+    <script>
+
+        const startBtn = document.querySelector(".start");
+        let PlayerOneInput = document.querySelector(".player-one");
+        let PlayerTwoInput = document.querySelector(".player-two");
+        //check if player input is epmty and display alert users to fill
+        const validatePlayerNameInput = (e) =>{
+           if(PlayerOneInput.value==='' && PlayerTwoInput.value===''){
+                e.preventDefault();
+                alert("INPUT YOUR NAMES RESPECTIVELY!")
+           }else{
+             storePlayersName() //store players name on local storage
+           }
+        }
+       
+        const storePlayersName =()=>{
+            let playerOne = PlayerOneInput.value;
+            let playerTwo = PlayerTwoInput.value;
+            console.log({playerOne,playerTwo})
+            localStorage.setItem('playerNames', JSON.stringify({playerOne,playerTwo}));
+        }
+
+        startBtn.addEventListener('click',validatePlayerNameInput);
+
+    </script>
 </body>
 </html>

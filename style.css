@@ -13,9 +13,9 @@
 .container{
     max-width: 1200px;
     margin: 0 auto;
-    width: 80%;
+    width: 95%;
     min-height: 100vh;
-   padding:20px;
+    padding:30px;
 }
 
 a{
@@ -24,35 +24,14 @@ a{
 }
 
 body{
-     overflow-x: hidden;
+    overflow-x: hidden;
     background-color:#0F0E0E;
     font-family: 'Montserrat', sans-serif;
     text-align: center;
     color: var(--primary-col);
 }
 
-.div-btn{
-    display: flex;
-    flex-direction: column;
-}
-
-.div-btn > *+*{
-  margin-top: 17px;
-}
-
-header{
-    display: flex;
-    flex-direction: column;
-     align-items: center;
-    justify-content: center;
-   
-}
-
-header > *+*{
-     margin-top: 2.5rem;
-}
-
- button{
+button{
     display: inline-block;
     padding: 1rem;
     background-color:transparent;
@@ -60,20 +39,24 @@ header > *+*{
     font-size: 1.3rem;
     cursor: pointer;
     color: var(--primary-col);
-     max-width: 400px;
-    
+    max-width: 400px;
 }
 
+/* state game  section*/
 
-::placeholder{
-    color: #fff;
-    font-size: 1.3rem;
-    font-family: 'Montserrat', sans-serif;
-    text-align: center;
+header{
+    display: flex;
+    flex-direction: column;
+     align-items: center;
+    justify-content: center;
 }
+
+header > *+*{
+     margin-top: 2.5rem;
+}
+
 
 header h1,header p,.board h1{
-    
     font-weight:bold ;
     text-transform: capitalize;
 }
@@ -88,9 +71,16 @@ header p{
      width: 90%;
 }
 
+::placeholder{
+    color: #fff;
+    font-size: 1.3rem;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
 .input{
-      display: flex;
-       flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .input > *+*{
@@ -109,71 +99,85 @@ input[type='text']{
      text-align: center;
 }
 
-
-.winner-call{
-    color: var(--primary-col);
-    font-size: 2.4rem;
-    font-weight: bold;
-}
-
-table{
-   
-    border-spacing:0;
-    font-size: 3rem;
-}
-
-td{
-    border: 3px var(--primary-col) solid;
-    width: 5.5rem;
-    height: 5.5rem;
-    
-}
-
-tr td:first-child{
-    border-left:0px;
-}
-tr td:last-child{
-    border-right:0px;
-}
-table tr:first-child td{
-    border-top:0px;
-}
-table tr:last-child td{
-    border-bottom:0px;
-}
-
-
+/* game board section */
 
 .board{
     font-family: 'Montserrat', sans-serif;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows:50px 1fr auto;
+    justify-items: center;
+    align-content: center;
     align-items: center;
-    width: 100%;
-    text-align: center;
+    gap: 2rem;
+}
+
+.game-board{
+    display: grid;
+    grid-template-columns: repeat(3,minmax(70px,120px));
+    grid-template-rows:  repeat(3,minmax(50px,100px));
+    
+}
+
+.box{
+    border: 3px var(--primary-col) solid;
+    display: flex;
+    align-items: center;
     justify-content: center;
-     
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
-.board > *+*{
-    margin-top: 2rem;
+.box:nth-child(1),
+.box:nth-child(4),
+.box:nth-child(7){
+    border-left: none;
+}
+
+.box:nth-child(1),
+.box:nth-child(2),
+.box:nth-child(3){
+    border-top: none;
+}
+
+.box:nth-child(7),
+.box:nth-child(8),
+.box:nth-child(9){
+    border-bottom: none;
+}
+
+.box:nth-child(3),
+.box:nth-child(6),
+.box:nth-child(9){
+    border-right: none;
 }
 
 
-.blur{
-       /* Add the blur effect */
-  filter: blur(3px);
-  -webkit-filter: blur(3px);
+.div-btn{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
+
+.div-btn > *+*{
+  margin-top: 17px;
+}
+
 
 /* modal */
+
+.blur{
+    /* Add the blur effect */
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+}
 
 .modal{
     text-align: center;
     justify-content: center;
     align-items: center;
     height: 100vh;
-     width: 100%;
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
@@ -183,12 +187,17 @@ table tr:last-child td{
     cursor: pointer;
 }
 
+.open-modal{
+    display: flex;
+}
+    
+
 .modal-content{
-justify-content: center;
-align-items: center;
-background-color: rgba(0, 0, 0, 0.5);
-padding: 30px;
-border-radius: 7px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    border-radius: 7px;
 }
 
 .display-wins{
@@ -197,86 +206,55 @@ font-size: 2.5rem;
 
 
 
-.open-modal{
-display: flex;
-}
-
-
 @media(min-width:650px){
 
-
-table{
-
-    border-spacing:0;
-    font-size: 3rem;
-}
-
-td{
-    border: 6px var(--primary-col) solid;
-    width: 7rem;
-    height: 7rem;
+   /* start game section */
+    header h1 ,.board h1{
+        font-size: 3rem;
+    }
     
-}
-
-.div-btn {
+    header p {
+        font-size: 1.7rem;
+        width: 100%;
+    }
     
-    flex-direction:row;
-}
+    .input{
+        flex-direction: row; 
+        justify-content: space-between;
+    }
+    
+    .input > *+*{
+        margin-top: 0;
+    }
+    
+    input[type='text']{
+        width: 50%;
+    }
 
-.div-btn > *+* {
-    margin-top: 0px;
-    margin-left:17px ;
-}
+    /*  gameboard section*/
+    .div-btn {
+        flex-direction:row;
+    }
 
-header h1 ,.board h1{
-    font-size: 3rem;
-}
+    .div-btn > *+* {
+        margin-top: 0px;
+        margin-left:17px ;
+    }
 
-header p {
-    font-size: 1.7rem;
-    width: 100%;
-}
-
-.input{
-flex-direction: row; 
-justify-content: space-between;
-}
-
-.input > *+*{
-    margin-top: 0;
-}
-
-input[type='text']{
-    width: 50%;
-   
-}
-
-.display-wins{
-    font-size: 3rem;
-}
+    /* modal */
+    .display-wins{
+        font-size: 3rem;
+    }
 
 }
 
 @media(min-width:800px){
 
-    table{
-   
-        border-spacing:0;
-        font-size: 3.5rem;
-    }
-    
-    td{
-        border: 6px var(--primary-col) solid;
-        width: 7.6rem;
-        height: 7.6rem;
-        
-    }
-  
     header > *+*{
         margin-top: 3rem;
-   }
+    }
 
-  header h1 ,.board h1{
+        header h1 ,.board h1{
         font-size: 3rem;
     }
 
@@ -285,26 +263,17 @@ input[type='text']{
         width: 100%;
     }
 
-  .input{
-    flex-direction: row; 
-    justify-content: space-between;
-  }
+    .input{
+        flex-direction: row; 
+        justify-content: space-between;
+    }
 
-.input > *+*{
-    margin-top: 0;
-}
-
-input[type='text']{
-    width: 50%;
-   
-}
-
-::placeholder{
-    font-size: 1.6rem;
-   
-}
-
-.display-wins{
-    font-size: 3rem;
-}
+    ::placeholder{
+        font-size: 1.6rem;
+    }
+    
+    /* modal */
+    .display-wins{
+        font-size: 3rem;
+    }
 }
