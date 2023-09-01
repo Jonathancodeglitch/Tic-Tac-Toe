@@ -1,49 +1,27 @@
-//player should be able to click on the board and display there marker
-//display which person turn it is currently
-// build a logic that can check if the game is over , if a player won , if its a tie
-// add a button to start and restart the game
-// add a display element that displays won,if the game is a tie
 //create an ai so a player can play with a computer
 
 let cells = document.querySelectorAll('.box');
-
 let modal = document.getElementById('modal');
 let modalText = document.querySelector('.display-wins');
 let restartButton = document.querySelector('.restart');
 
 const gameBoard = (() => {
   const board = [];
-
+  //check which cell was clicked and add the marker to the particular index in the board array
   const addMarker = (cellValue) => {
     gameController.getCurrentPlayerTurn() == playerOne.name
       ? (board[cellValue] = 'X')
       : (board[cellValue] = 'O');
   };
 
+  //return our board array throught closure
   const getBoard = () => {
     return board;
-  };
-
-  const winCondition = () => {
-    return [
-      //check rows
-      [1, 2, 3],
-      [4, 5, 6],
-      [7, 8, 9],
-      //check column
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9],
-      //check diagonal
-      [1, 5, 9],
-      [3, 5, 7],
-    ];
   };
 
   return {
     getBoard,
     addMarker,
-    winCondition,
   };
 })();
 
@@ -62,14 +40,33 @@ let playerTwo = player(playerNames.playerTwo, 'o');
 //game conttroller
 const gameController = (() => {
   let PlayerOneTurn = true;
-
+  let board = gameBoard.getBoard();
+  //every win condition
+  const winCondition = [
+    //check rows
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    //check column
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    //check diagonal
+    [0, 4, 8],
+    [6, 4, 2],
+  ];
+  //switch player turn
   const changePlayerTurn = () => {
     PlayerOneTurn = !PlayerOneTurn;
   };
 
+  // get current player turn
   const getCurrentPlayerTurn = () => {
     return PlayerOneTurn ? playerOne.name : playerTwo.name;
   };
+
+  // add each players move (what was played by each player) to the moves arr
+  //in the player object respectively.
 
   const updatePlayerMoves = (value) => {
     if (PlayerOneTurn) {
@@ -81,15 +78,16 @@ const gameController = (() => {
 
   //check win
   const checkWin = () => {
-    let winCondition = gameBoard.winCondition();
     let winnerName;
     let winnerMoves;
-
+    //loop through the condition for a win
+    //check if any of the win conditon is included in the player moves
     winCondition.forEach((win) => {
       let xWins = win.every((elem) => playerOne.moves.includes(elem));
-
       let oWins = win.every((elem) => playerTwo.moves.includes(elem));
 
+      //if any is true return the winner
+      // and update the winner name and the winners moves with the moves that won
       if (xWins) {
         winnerName = playerOne.name;
         winnerMoves = win;
@@ -98,7 +96,7 @@ const gameController = (() => {
         winnerMoves = win;
       }
     });
-    //continue from here
+
     return [winnerName, winnerMoves];
   };
 
@@ -116,11 +114,14 @@ const gameController = (() => {
   //play round
   const playRound = (cellValue) => {
     gameBoard.addMarker(cellValue);
-    changePlayerTurn();
     updatePlayerMoves(cellValue);
+    changePlayerTurn();
   };
+
   //restate game
   const restateGame = () => {
+    //clear board
+    board.length = 0;
     //set player turn back to default
     PlayerOneTurn = true;
     displayController.displayCurrentPlayerName();
@@ -147,10 +148,11 @@ const gameController = (() => {
 
 //display obj
 const displayController = (() => {
+  //get game board
   const board = gameBoard.getBoard();
-  // let count = 0;
   const currentPlayer = document.getElementById('current-player');
 
+  //display which player turn it currently is.
   const displayCurrentPlayerName = () => {
     let text = `It's ${gameController.getCurrentPlayerTurn()} Turn`;
     currentPlayer.textContent = text;
@@ -178,34 +180,32 @@ const displayController = (() => {
     }
   };
 
-  const displayMarker = (e) => {
+  //display game marker from the board arrays in the cells
+  function displayMarker() {
+    cells.forEach((cell, index) => {
+      cell.textContent = board[index];
+    });
+  }
+
+  // render to the Dom on click
+  const display = (e) => {
     let cell = e.target;
     let cellValue = cell.dataset.value;
-
     if (cell.textContent == '') {
-      //update gamboard with x or o
-      cell.textContent = `${
-        gameController.getCurrentPlayerTurn() == playerOne.name ? 'X' : 'O'
-      }`;
-
       gameController.playRound(cellValue);
+      displayMarker();
       displayCurrentPlayerName();
       displayWinner();
-
-      console.log(board);
     }
   };
 
-  return { displayMarker, displayCurrentPlayerName };
+  return { display, displayCurrentPlayerName, displayMarker };
 })();
 
 displayController.displayCurrentPlayerName(); // display who's play turn it is..
 
 //event listner
-cells.forEach((cell) => {
-  cell.addEventListener('click', displayController.displayMarker);
-});
-
+cells.forEach((cell) => cell.addEventListener('click', displayController.display));
 //restate game when button is click
 restartButton.addEventListener('click', gameController.restateGame);
 // remove modal and restate game
