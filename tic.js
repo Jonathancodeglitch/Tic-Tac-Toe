@@ -9,7 +9,7 @@ const gameBoard = (() => {
   const board = [];
   //check which cell was clicked and add the marker to the particular index in the board array
   const addMarker = (cellValue) => {
-    gameController.getCurrentPlayerTurn() == playerOne.name
+    gameController.getCurrentPlayerTurnName() == playerOne.name
       ? (board[cellValue] = 'X')
       : (board[cellValue] = 'O');
   };
@@ -38,9 +38,17 @@ let playerOne = player(playerNames.playerOne, 'x');
 let playerTwo = player(playerNames.playerTwo, 'o');
 
 //game conttroller
+//this module contains our logic for our game
+
 const gameController = (() => {
-  let PlayerOneTurn = true;
+  //variables
+  let PlayeroneTurn = true;
+  let gameover = false;
+  let gameWon = false;
   let board = gameBoard.getBoard();
+  let winnerName;
+  let winnerMoves;
+
   //every win condition
   const winCondition = [
     //check rows
@@ -57,19 +65,19 @@ const gameController = (() => {
   ];
   //switch player turn
   const changePlayerTurn = () => {
-    PlayerOneTurn = !PlayerOneTurn;
+    PlayeroneTurn = !PlayeroneTurn;
   };
 
   // get current player turn
-  const getCurrentPlayerTurn = () => {
-    return PlayerOneTurn ? playerOne.name : playerTwo.name;
+  const getCurrentPlayerTurnName = () => {
+    return PlayeroneTurn ? playerOne.name : playerTwo.name;
   };
 
   // add each players move (what was played by each player) to the moves arr
   //in the player object respectively.
 
   const updatePlayerMoves = (value) => {
-    if (PlayerOneTurn) {
+    if (PlayeroneTurn) {
       playerOne.moves.push(Number(value));
     } else {
       playerTwo.moves.push(Number(value));
@@ -79,7 +87,6 @@ const gameController = (() => {
   //check win
   const checkWin = () => {
     let winnerName;
-    let winnerMoves;
     //loop through the condition for a win
     //check if any of the win conditon is included in the player moves
     winCondition.forEach((win) => {
@@ -88,34 +95,49 @@ const gameController = (() => {
 
       //if any is true return the winner
       // and update the winner name and the winners moves with the moves that won
-      if (xWins) {
-        winnerName = playerOne.name;
-        winnerMoves = win;
-      } else if (oWins) {
-        winnerName = playerTwo.name;
-        winnerMoves = win;
+      if (xWins || oWins) {
+        //update winner name base on who won
+        xWins ? (winnerName = playerOne.name) : (winnerName = playerTwo.name);
+        // display the winner
+        displayController.displayGameStaus(`The winner is ${winnerName}`);
+        //outline the player move that won the game
+        outlineWinningCell(win);
+        gameWon = true;
+        gameover = true;
       }
     });
-
-    return [winnerName, winnerMoves];
   };
 
   // check if cell is empty
-  const checkForEmptyCell = () => {
-    let isCellEmpty = true;
-    cells.forEach((cell) => {
-      if (cell.textContent === '') {
-        isCellEmpty = false;
-      }
+  const checkTie = () => {
+    if (board.length > 8 && !gameWon) {
+      displayController.displayGameStaus(`Draw`);
+    }
+  };
+
+  //when game is won change the backgroundcolor of the cell that won
+  //the game
+  const outlineWinningCell = (winningMoves) => {
+    winningMoves.forEach((moves) => {
+      let winningCell = document.querySelector(`[data-value="${moves}"]`);
+      winningCell.style.backgroundColor = '#383737';
     });
-    return isCellEmpty;
   };
 
   //play round
   const playRound = (cellValue) => {
+    //add marker to game boeard
     gameBoard.addMarker(cellValue);
+    //update moves made by players
     updatePlayerMoves(cellValue);
+    //swutch player turn
     changePlayerTurn();
+    //display current  player turn
+    displayController.displayCurrentPlayerTurnName();
+    //check tie
+    checkTie();
+    //check win
+    checkWin();
   };
 
   //restate game
@@ -123,8 +145,8 @@ const gameController = (() => {
     //clear board
     board.length = 0;
     //set player turn back to default
-    PlayerOneTurn = true;
-    displayController.displayCurrentPlayerName();
+    PlayeroneTurn = true;
+    displayController.displayCurrentPlayerTurnName();
     //clear cells
     cells.forEach((cell) => {
       cell.textContent = '';
@@ -138,9 +160,7 @@ const gameController = (() => {
   };
 
   return {
-    getCurrentPlayerTurn,
-    checkWin,
-    checkForEmptyCell,
+    getCurrentPlayerTurnName,
     restateGame,
     playRound,
   };
@@ -150,38 +170,23 @@ const gameController = (() => {
 const displayController = (() => {
   //get game board
   const board = gameBoard.getBoard();
-  const currentPlayer = document.getElementById('current-player');
+  let currentPlayerDiv = document.getElementById('current-player');
 
   //display which player turn it currently is.
-  const displayCurrentPlayerName = () => {
-    let text = `It's ${gameController.getCurrentPlayerTurn()} Turn`;
-    currentPlayer.textContent = text;
+  const displayCurrentPlayerTurnName = () => {
+    let text = `It's ${gameController.getCurrentPlayerTurnName()} Turn`;
+    currentPlayerDiv.textContent = text;
   };
 
-  const displayWinner = () => {
-    const [winnerName, winnerMoves] = gameController.checkWin();
-    //check for draw
-    if (gameController.checkForEmptyCell() && !winnerName) {
-      modal.classList.add('open-modal');
-      modalText.textContent = `DRAW!!`;
-      //remove currentPlayerName
-      currentPlayer.textContent = '';
-    } else if (winnerName) {
-      // check for a win
-      modal.classList.add('open-modal');
-      modalText.textContent = `The winner is ${winnerName}`;
-      //outline winner moves
-      winnerMoves.forEach((moves) => {
-        let cell = document.querySelector(`[data-value="${moves}"]`);
-        cell.style.backgroundColor = '#383737';
-      });
-      //remove currentPlayerName
-      currentPlayer.textContent = '';
-    }
+  //display when there is a tie or the game was won
+  const displayGameStaus = (text) => {
+    currentPlayerDiv.textContent = '';
+    modal.classList.add('open-modal');
+    modalText.textContent = text;
   };
 
   //display game marker from the board arrays in the cells
-  function displayMarker() {
+  function displayMarkers() {
     cells.forEach((cell, index) => {
       cell.textContent = board[index];
     });
@@ -193,19 +198,24 @@ const displayController = (() => {
     let cellValue = cell.dataset.value;
     if (cell.textContent == '') {
       gameController.playRound(cellValue);
-      displayMarker();
-      displayCurrentPlayerName();
-      displayWinner();
+      displayMarkers();
     }
   };
 
-  return { display, displayCurrentPlayerName, displayMarker };
+  return {
+    display,
+    displayCurrentPlayerTurnName,
+    displayMarkers,
+    displayGameStaus,
+  };
 })();
 
-displayController.displayCurrentPlayerName(); // display who's play turn it is..
+displayController.displayCurrentPlayerTurnName(); // display who's play turn it is..
 
 //event listner
-cells.forEach((cell) => cell.addEventListener('click', displayController.display));
+cells.forEach((cell) =>
+  cell.addEventListener('click', displayController.display)
+);
 //restate game when button is click
 restartButton.addEventListener('click', gameController.restateGame);
 // remove modal and restate game
