@@ -39,7 +39,6 @@ let playerTwo = player(playerNames.playerTwo, 'o');
 
 //game conttroller
 //this module contains our logic for our game
-
 const gameController = (() => {
   //variables
   let PlayeroneTurn = true;
@@ -75,7 +74,6 @@ const gameController = (() => {
 
   // add each players move (what was played by each player) to the moves arr
   //in the player object respectively.
-
   const updatePlayerMoves = (value) => {
     if (PlayeroneTurn) {
       playerOne.moves.push(Number(value));
@@ -126,17 +124,12 @@ const gameController = (() => {
 
   //play round
   const playRound = (cellValue) => {
-    //add marker to game boeard
+    //add marker to game board
     gameBoard.addMarker(cellValue);
-    //update moves made by players
     updatePlayerMoves(cellValue);
-    //swutch player turn
     changePlayerTurn();
-    //display current  player turn
     displayController.displayCurrentPlayerTurnName();
-    //check tie
     checkTie();
-    //check win
     checkWin();
   };
 
