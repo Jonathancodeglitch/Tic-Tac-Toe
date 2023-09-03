@@ -201,7 +201,8 @@ input[type='text']{
 }
 
 .display-wins{
-font-size: 2.5rem;
+    font-size: 2.5rem;
+    text-transform: capitalize;
 }
 
 
