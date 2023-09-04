@@ -1,5 +1,3 @@
-//create an ai so a player can play with a computer
-
 let cells = document.querySelectorAll('.box');
 let modal = document.getElementById('modal');
 let modalText = document.querySelector('.display-wins');
@@ -8,7 +6,7 @@ let restartButton = document.querySelector('.restart');
 const gameBoard = (() => {
   const board = new Array(9);
   //check which cell was clicked and add the marker to the particular index in the board array
-  const addMarker = (cellValue) => {
+  const addMarkerToGameBoard = (cellValue) => {
     gameController.getCurrentPlayerTurnName() == playerOne.name
       ? (board[cellValue] = 'X')
       : (board[cellValue] = 'O');
@@ -21,7 +19,7 @@ const gameBoard = (() => {
 
   return {
     getBoard,
-    addMarker,
+    addMarkerToGameBoard,
   };
 })();
 
@@ -122,7 +120,7 @@ const gameController = (() => {
   //play round
   const playRound = (cellValue) => {
     //add marker to game board
-    gameBoard.addMarker(cellValue);
+    gameBoard.addMarkerToGameBoard(cellValue);
     updatePlayerMoves(cellValue);
     changePlayerTurn();
     displayController.displayCurrentPlayerTurnName();
@@ -178,27 +176,19 @@ const displayController = (() => {
     modalText.textContent = text;
   };
 
-  //display game marker from the board arrays in the cells
-  function displayMarkers() {
-    cells.forEach((cell, index) => {
-      cell.textContent = board[index];
-    });
-  }
-
   // render to the Dom on click
-  const display = (e) => {
+  const render = (e) => {
     let cell = e.target;
     let cellValue = cell.dataset.value;
     if (cell.textContent == '') {
       gameController.playRound(cellValue);
-      displayMarkers();
+      cell.textContent = board[cellValue];
     }
   };
 
   return {
-    display,
+    render,
     displayCurrentPlayerTurnName,
-    displayMarkers,
     displayGameStaus,
   };
 })();
@@ -207,7 +197,7 @@ displayController.displayCurrentPlayerTurnName(); // display who's play turn it 
 
 //event listner
 cells.forEach((cell) =>
-  cell.addEventListener('click', displayController.display)
+  cell.addEventListener('click', displayController.render)
 );
 //restate game when button is click
 restartButton.addEventListener('click', gameController.restateGame);
