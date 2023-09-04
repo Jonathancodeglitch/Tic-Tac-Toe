@@ -6,7 +6,7 @@ let modalText = document.querySelector('.display-wins');
 let restartButton = document.querySelector('.restart');
 
 const gameBoard = (() => {
-  const board = [];
+  const board = new Array(9);
   //check which cell was clicked and add the marker to the particular index in the board array
   const addMarker = (cellValue) => {
     gameController.getCurrentPlayerTurnName() == playerOne.name
@@ -42,11 +42,8 @@ let playerTwo = player(playerNames.playerTwo, 'o');
 const gameController = (() => {
   //variables
   let PlayeroneTurn = true;
-  let gameover = false;
-  let gameWon = false;
+  let gameWon;
   let board = gameBoard.getBoard();
-  let winnerName;
-  let winnerMoves;
 
   //every win condition
   const winCondition = [
@@ -101,14 +98,14 @@ const gameController = (() => {
         //outline the player move that won the game
         outlineWinningCell(win);
         gameWon = true;
-        gameover = true;
       }
     });
   };
 
-  // check if cell is empty
   const checkTie = () => {
-    if (board.length > 8 && !gameWon) {
+    //check if any index in the board does not contain undefined(is not empty)
+    // and check if the game isnt won and display a tie message
+    if (!board.includes(undefined) && !gameWon) {
       displayController.displayGameStaus(`Draw`);
     }
   };
@@ -135,8 +132,11 @@ const gameController = (() => {
 
   //restate game
   const restateGame = () => {
+    gameWon = false;
     //clear board
     board.length = 0;
+    //initialize the board with 8 undefine value
+    board.length = 9;
     //set player turn back to default
     PlayeroneTurn = true;
     displayController.displayCurrentPlayerTurnName();
@@ -162,7 +162,7 @@ const gameController = (() => {
 //display obj
 const displayController = (() => {
   //get game board
-  const board = gameBoard.getBoard();
+  let board = gameBoard.getBoard();
   let currentPlayerDiv = document.getElementById('current-player');
 
   //display which player turn it currently is.
